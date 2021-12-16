@@ -1,0 +1,35 @@
+0.4
+Noten tallennus 
+Selain->Palvelin: HTTP Get https://studies.cs.helsinki.fi/exampleapp/notes
+Palvelin->Selain: HTML koodi
+Selain->Palvelin: HTTP Get main.css
+Palvelin->Selain: Main.css
+Selain->Palvelin: HTTP Get Spa.js
+Palvelin->Selain: Spa js koodi
+Pyytää lataamaan data.json tiedoston
+Selain->Palvelin:HTTP Get data.json
+Palvelin->Selain: data.json
+Selain->Palvelin:HTTP Favicon.icon
+Palvelin->Selain: kuva
+
+0.5 
+title SPA sivun lataaminen
+
+Selain->Palvelin: HTTP Get https://studies.cs.helsinki.fi/exampleapp/spa
+Palvelin->Selain: HTML koodi
+
+Selain->Palvelin: HTTP Get main.css
+Palvelin->Selain: Main.css
+
+Selain->Palvelin: HTTP Get Spa.js
+Palvelin->Selain: Spa js koodi
+
+Selain->Palvelin:HTTP Get data.json
+Palvelin->Selain: data.json
+Selain->Palvelin:HTTP Favicon.icon
+Palvelin->Selain: kuva
+
+0.6
+title SPA noten luonti
+Selain->Palvelin: POST new_note_spa
+Palvelin->Selain: 201 created.
