@@ -33,3 +33,4 @@ Palvelin->Selain: kuva
 title SPA noten luonti
 Selain->Palvelin: POST new_note_spa
 Palvelin->Selain: 201 created.
+pikku muutos committia varten
