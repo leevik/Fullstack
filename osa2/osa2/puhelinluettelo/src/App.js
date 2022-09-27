@@ -3,10 +3,7 @@ import axios from 'axios'
 import personService from './services/persons'
 
 const PhoneBook = ({persons, filterName, handleFilterChange, handleDelete}) => {
- // console.log(persons, "phonebook persons")
- // console.log(filterName, "filtername") 
   const filtered = persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()))
-  console.log(filtered,"filtered")
   return(
     <div>
     <h2>Phonebook</h2>
@@ -22,7 +19,6 @@ const PhoneBook = ({persons, filterName, handleFilterChange, handleDelete}) => {
   )
 }
 const Message = ({message, success, errorMessage}) => {
-  console.log(message, "message")
   if(message=== null){
     return (<div></div>)
   }
@@ -78,7 +74,6 @@ const PersonForm = ({ handleSubmit, newName, handleChange, newPhoneNumber, handl
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [newName, setNewName] = useState('')
   const [newPhoneNumber, setPhoneNumber] = useState('')
   const [filterName, setFilterName] = useState('')
@@ -86,25 +81,22 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("")
   const [success, setSuccess] = useState(true)
 
-
   useEffect(() => {
     console.log('effect')
-    axios
-    .get('http://localhost:3001/persons')
+    personService
+    .getAll()
     .then(response => {
       console.log('promise fulfilled')
-      setPersons(response.data)
+      setPersons(response)
     })
   }, [])
-  console.log('render', persons.length, 'persons')
-
+console.log(persons, "persons")
 
   const handleFilterChange = (event) => {
     setFilterName(event.target.value)
   }
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
   const handlePhoneNumber = (event) =>{
@@ -119,40 +111,35 @@ const App = () => {
     }
     if (persons.some(e => e.name === newName)){
       if(window.confirm(`${newName} is already in the phonebook`)){
-      console.log("painoit ok")
-      console.log(persons, "hahahaaha")
       const updatePerson = persons.filter(p => p.name === newName)
-      console.log(updatePerson[0].id, "updatePerson")
       setMessage(`Successfully changed ${newName}'s phonenumber`)
         personService
         .update(updatePerson[0].id, noteObject)
         .then(response => console.log(response))
         .catch(error => {
-          console.log(error)
           setSuccess(false)
           setErrorMessage(`${newName} is missing from phonebook`)
         })
       }
-      console.log("painoit cancel")
     }
     else{
       setMessage(`Added ${newName} succesfully to phonebook`)
       personService
       .create(noteObject)
       .then(response => {
-        console.log(response, "create person")
-        setPersons(persons.concat(noteObject))
+        console.log(response, "response", noteObject, "noteObject")
+        setPersons(persons.concat(response))
         setNewName('')
         setPhoneNumber('')
       })
     }
   }
   const handleDelete = (props , name) => {
-    console.log(props, name)
+    console.log(props, "helete props")
     if(window.confirm(`Do you really want to remove ${name}`)){
       personService
       .remove(props)
-      .then(response => console.log(name, "deleted"))
+      .then(jaajo => personService.getAll().then(response => console.log(response, "response asdasdsadasd") ||setPersons(response) || console.log("tulenko tänne")))
     }
 
   }

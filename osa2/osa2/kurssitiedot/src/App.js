@@ -28,8 +28,8 @@ const Notification = ({message, success, successMessage}) => {
     <div className='error'>{message}</div>
   )
 }
-  const App = (props) => {
-    const [notes, setNotes] = useState(props.notes)
+  const App = () => {
+    const [notes, setNotes] = useState([])
     const [newNote, setNewNote] = useState('a new note...')
     const [showAll, setShowAll] = useState(true)
     const [errorMessage, setErrorMessage] = useState("")
@@ -41,6 +41,16 @@ const Notification = ({message, success, successMessage}) => {
     const showDecider = () => setShowAll(!showAll)
     const label = showAll ? 'show important only' : 'show all'
 
+    useEffect(() => {
+      console.log('effect')
+      noteService
+      .getAll()
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response)
+      })
+    }, [])
+    
     /* const addNote = (event) => {
       event.preventDefault()
       console.log("button clicked", event.target)

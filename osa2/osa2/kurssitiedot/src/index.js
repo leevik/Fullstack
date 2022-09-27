@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-const notes = [
+/* const notes = [
   {
     id: 1,
     content: 'HTML is easy',
@@ -22,8 +22,8 @@ const notes = [
     date: '2019-05-30T19:20:14.298Z',
     important: true
   }
-]
+] */
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <App notes={notes} />
+  <App  />
 )
