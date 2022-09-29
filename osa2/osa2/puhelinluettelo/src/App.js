@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 
 const PhoneBook = ({persons, filterName, handleFilterChange, handleDelete}) => {
+  console.log(persons, "persons")
   const filtered = persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()))
   return(
     <div>
@@ -38,7 +38,6 @@ const Persons = ({filtered, handleDelete}) => {
     <h2>Numbers</h2>
     <ul style={{listStyleType: "none"}}>
       {filtered.map(p => 
-        console.log(p, "person") ||
         <li key={p.id}>{p.name} {p.number} <button onClick={() => handleDelete(p.id, p.name)}>Delete</button></li>)}
     </ul>
     </div>
@@ -90,7 +89,7 @@ const App = () => {
       setPersons(response)
     })
   }, [])
-console.log(persons, "persons")
+
 
   const handleFilterChange = (event) => {
     setFilterName(event.target.value)
@@ -111,11 +110,13 @@ console.log(persons, "persons")
     }
     if (persons.some(e => e.name === newName)){
       if(window.confirm(`${newName} is already in the phonebook`)){
-      const updatePerson = persons.filter(p => p.name === newName)
+      const updatePerson = persons.filter(p => p.name === newName)   
+      console.log(updatePerson, "updateperson")
+      console.log(updatePerson[0].id,"oikea id")
       setMessage(`Successfully changed ${newName}'s phonenumber`)
         personService
         .update(updatePerson[0].id, noteObject)
-        .then(response => console.log(response))
+        .then(response => personService .getAll().then(data=> setPersons(data)))
         .catch(error => {
           setSuccess(false)
           setErrorMessage(`${newName} is missing from phonebook`)
@@ -135,11 +136,10 @@ console.log(persons, "persons")
     }
   }
   const handleDelete = (props , name) => {
-    console.log(props, "helete props")
     if(window.confirm(`Do you really want to remove ${name}`)){
       personService
       .remove(props)
-      .then(jaajo => personService.getAll().then(response => console.log(response, "response asdasdsadasd") ||setPersons(response) || console.log("tulenko tänne")))
+      .then(jaajo => personService.getAll().then(response => setPersons(response) ))
     }
 
   }
