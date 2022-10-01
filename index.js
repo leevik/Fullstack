@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 
+
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
@@ -78,6 +79,7 @@ app.get('/', (req, res) => {
   })
   
   app.get('/api/persons/:id', (request, response) => {
+    console.log(Number(request.params.id))
     const id = Number(request.params.id)
     
     //const note = notes.find(note => note.id === id)
@@ -92,7 +94,6 @@ app.get('/', (req, res) => {
       response.status(404).end()
     }
   })
-  
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(p => p.id !== id)
@@ -113,6 +114,7 @@ app.get('/', (req, res) => {
   
   app.post('/api/persons', (request, response) => {
     const body = request.body
+    console.log("hahaha",body)
     const find = persons.filter(person => person.name === body.name)
     
     
@@ -144,6 +146,41 @@ app.get('/', (req, res) => {
   
     response.json(person)
   })
+  app.put('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    console.log(Number(request.params.id))
+    const body = request.body
+    const find = persons.filter(person => person.name === body.name)
+    console.log("find", find)
+    if (!body.name ) {
+      return response.status(400).json({ 
+        error: 'name missing' 
+      })
+    }
+    if (!body.number) {
+      return response.status(400).json({ 
+        error: 'number missing' 
+      })
+    }
+  
+    const person = {
+      name: body.name,
+      number: body.number,
+      date: new Date(),
+      id: generateId()
+    }
+    const jaajo = persons.map(p => p.id === id)
+    console.log("jaajo",jaajo)
+    const asd = persons.map(p => p.id ).indexOf(id)
+    if(jaajo.length > 0)
+      {
+        persons[asd]=person
+      }
+     
+    response.json(person)
+  })
+
+
   const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
   }
