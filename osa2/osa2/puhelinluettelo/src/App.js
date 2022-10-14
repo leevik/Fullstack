@@ -118,6 +118,7 @@ const App = () => {
         .update(updatePerson[0].id, noteObject)
         .then(response => personService .getAll().then(data=> setPersons(data)))
         .catch(error => {
+          console.log(error.response.data)
           setSuccess(false)
           setErrorMessage(`${newName} is missing from phonebook`)
         })
@@ -132,6 +133,11 @@ const App = () => {
         setPersons(persons.concat(response))
         setNewName('')
         setPhoneNumber('')
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        setSuccess(false)
+        setErrorMessage(`${error.response.data} qwewe` )
       })
     }
   }
