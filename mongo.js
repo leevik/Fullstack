@@ -31,7 +31,7 @@ const note = new Note({
   mongoose.connection.close()
 }) */
 Note.find({}).then(result  => {
-    console.log("haha",result, "haha ohi") || result.forEach(note => {
+    console.log("haha",result, "haha") || result.forEach(note => {
       console.log(note)
     })
     mongoose.connection.close()

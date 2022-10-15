@@ -113,6 +113,7 @@ const App = () => {
       const updatePerson = persons.filter(p => p.name === newName)   
       console.log(updatePerson, "updateperson")
       console.log(updatePerson[0].id,"oikea id")
+      setSuccess(true)
       setMessage(`Successfully changed ${newName}'s phonenumber`)
         personService
         .update(updatePerson[0].id, noteObject)
@@ -131,13 +132,14 @@ const App = () => {
       .then(response => {
         console.log(response, "response", noteObject, "noteObject")
         setPersons(persons.concat(response))
+        setSuccess(true)
         setNewName('')
         setPhoneNumber('')
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error.response.data.err, "haha")
         setSuccess(false)
-        setErrorMessage(`${error.response.data} qwewe` )
+        setErrorMessage(`${error.response.data.err}` )
       })
     }
   }
@@ -145,7 +147,13 @@ const App = () => {
     if(window.confirm(`Do you really want to remove ${name}`)){
       personService
       .remove(props)
-      .then(jaajo => personService.getAll().then(response => setPersons(response) ))
+      .then(jaajo => personService.getAll().then(response => {
+        setPersons(response)
+        setSuccess(true)
+        setMessage(`${name} successfully removed from phonebook`)
+      
+      }
+      ))
     }
 
   }
